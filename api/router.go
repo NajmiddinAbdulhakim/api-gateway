@@ -6,9 +6,9 @@ import (
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/NajmiddinAbdulhakim/api-gateway/services"
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	swaggerFiles	"github.com/swaggo/files" // swagger embed files
-	_ "github.com/NajmiddinAbdulhakim/api-gateway/api/docs"
+	// ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
+	// swaggerFiles	"github.com/swaggo/files" // swagger embed files
+	// _ "github.com/NajmiddinAbdulhakim/api-gateway/api/docs"
 )
 
 // Option ...
@@ -33,12 +33,15 @@ func New(option Option) *gin.Engine {
 
 	api := router.Group("/v1")
 	api.POST("/users", handlerV1.CreateUser)
-	// api.GET("/users/:id", handlerV1.GetUser)
-	// api.GET("/users", handlerV1.ListUsers)
-	// api.PUT("/users/:id", handlerV1.UpdateUser)
+	api.GET("/users/:id", handlerV1.GetUser)
+	api.GET("/users", handlerV1.GetListUsers)
+	api.PUT("/users/:id", handlerV1.UpdateUser)
 	// api.DELETE("/users/:id", handlerV1.DeleteUser)
 
-	url := ginSwagger.URL("swagger/dpc.json")
-	router.GET()
+	api.GET("/allposts", handlerV1.GetAllPosts)
+	api.PUT("/post/:id", handlerV1.UpdatePost)
+
+	// url := ginSwagger.URL("swagger/dpc.json")
+	// router.GET()
 	return router
 }
