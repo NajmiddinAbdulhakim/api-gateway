@@ -6,9 +6,9 @@ import (
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/NajmiddinAbdulhakim/api-gateway/services"
 	"github.com/gin-gonic/gin"
-	// ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
-	// swaggerFiles	"github.com/swaggo/files" // swagger embed files
-	// _ "github.com/NajmiddinAbdulhakim/api-gateway/api/docs"
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
+	swaggerFiles	"github.com/swaggo/files" // swagger embed files
+	_ "github.com/NajmiddinAbdulhakim/api-gateway/api/docs"
 )
 
 // Option ...
@@ -40,8 +40,8 @@ func New(option Option) *gin.Engine {
 
 	api.GET("/allposts", handlerV1.GetAllPosts)
 	api.PUT("/post/:id", handlerV1.UpdatePost)
-
-	// url := ginSwagger.URL("swagger/dpc.json")
-	// router.GET()
+	url := ginSwagger.URL("seagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,url))
+	router.Run()
 	return router
 }

@@ -11,10 +11,41 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/encoding/protojson"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/utils"
+	// "github.com/NajmiddinAbdulhakim/api-gateway/api/hendlers/model"
 )
 
+type UserReq struct {
+	Id                   string     `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	FirstName            string     `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name"`
+	LastName             string     `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name"`
+	UserName             string     `protobuf:"bytes,4,opt,name=user_name,json=userName,proto3" json:"user_name"`
+	Email                string     `protobuf:"bytes,5,opt,name=email,proto3" json:"email"`
+	PhoneNumber          []string   `protobuf:"bytes,6,rep,name=phone_number,json=phoneNumber,proto3" json:"phone_number"`
+	Addresses            []*Address `protobuf:"bytes,7,rep,name=addresses,proto3" json:"addresses"`
+	// Posts                []*Post    `protobuf:"bytes,8,rep,name=posts,proto3" json:"posts"`
+	Bio                  string     `protobuf:"bytes,9,opt,name=bio,proto3" json:"bio"`
+	Status               string     `protobuf:"bytes,10,opt,name=status,proto3" json:"status"`
+}
+
+type Address struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	Country              string   `protobuf:"bytes,2,opt,name=country,proto3" json:"country"`
+	City                 string   `protobuf:"bytes,3,opt,name=city,proto3" json:"city"`
+	District             string   `protobuf:"bytes,4,opt,name=district,proto3" json:"district"`
+	PostalCode           string   `protobuf:"bytes,5,opt,name=postal_code,json=postalCode,proto3" json:"postal_code"`
+}
+
+
+
 // CreateUser creates user
-// route /v1/users [post]
+// @Summary Create user summary
+// @Description This api is using create new user
+// @Tags User 
+// @Accept json
+// @Produce json
+// @Success 200 {string} Success
+// @Param user body UserReq true "user body"
+// @Router /v1/users [post]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		body        pb.User

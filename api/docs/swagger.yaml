@@ -1,0 +1,67 @@
+definitions:
+  v1.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      district:
+        type: string
+      id:
+        type: string
+      postal_code:
+        type: string
+    type: object
+  v1.UserReq:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/v1.Address'
+        type: array
+      bio:
+        description: Posts                []*Post    `protobuf:"bytes,8,rep,name=posts,proto3"
+          json:"posts"`
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      user_name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/users:
+    post:
+      consumes:
+      - application/json
+      description: This api is using create new user
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create user summary
+      tags:
+      - User
+swagger: "2.0"
