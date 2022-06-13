@@ -1,5 +1,5 @@
 definitions:
-  v1.Address:
+  model.Address:
     properties:
       city:
         type: string
@@ -12,15 +12,45 @@ definitions:
       postal_code:
         type: string
     type: object
-  v1.UserReq:
+  model.Media:
+    properties:
+      id:
+        type: string
+      link:
+        type: string
+      post_id:
+        type: string
+      type:
+        type: string
+    type: object
+  model.Post:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      medias:
+        items:
+          $ref: '#/definitions/model.Media'
+        type: array
+      title:
+        type: string
+      updatedAt:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.UpdateUserReq:
     properties:
       addresses:
         items:
-          $ref: '#/definitions/v1.Address'
+          $ref: '#/definitions/model.Address'
         type: array
       bio:
-        description: Posts                []*Post    `protobuf:"bytes,8,rep,name=posts,proto3"
-          json:"posts"`
         type: string
       email:
         type: string
@@ -39,10 +69,68 @@ definitions:
       user_name:
         type: string
     type: object
+  model.User:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/model.Address'
+        type: array
+      bio:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        items:
+          type: string
+        type: array
+      posts:
+        items:
+          $ref: '#/definitions/model.Post'
+        type: array
+      status:
+        type: string
+      updatedAt:
+        type: string
+      user_name:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
   /v1/users:
+    get:
+      consumes:
+      - application/json
+      description: This api is using for getting users list
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get User list summary
     post:
       consumes:
       - application/json
@@ -53,7 +141,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/v1.UserReq'
+          $ref: '#/definitions/model.User'
       produces:
       - application/json
       responses:
@@ -62,6 +150,71 @@ paths:
           schema:
             type: string
       summary: Create user summary
+      tags:
+      - User
+  /v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This api is using delete user by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete user summary
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: This api is using getting by id with posts
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get User By Id With Posts summary
+    put:
+      consumes:
+      - application/json
+      description: This api is using update user by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update user summary
       tags:
       - User
 swagger: "2.0"

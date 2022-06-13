@@ -5,35 +5,14 @@ import (
 	_"fmt"
 	"net/http"
 	"time"
-
+	"encoding/json"
 	pb "github.com/NajmiddinAbdulhakim/api-gateway/genproto"
 	l "github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/encoding/protojson"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/utils"
-	// "github.com/NajmiddinAbdulhakim/api-gateway/api/hendlers/model"
+	_"github.com/NajmiddinAbdulhakim/api-gateway/api/handlers/model"
 )
-
-type UserReq struct {
-	Id                   string     `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	FirstName            string     `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name"`
-	LastName             string     `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name"`
-	UserName             string     `protobuf:"bytes,4,opt,name=user_name,json=userName,proto3" json:"user_name"`
-	Email                string     `protobuf:"bytes,5,opt,name=email,proto3" json:"email"`
-	PhoneNumber          []string   `protobuf:"bytes,6,rep,name=phone_number,json=phoneNumber,proto3" json:"phone_number"`
-	Addresses            []*Address `protobuf:"bytes,7,rep,name=addresses,proto3" json:"addresses"`
-	// Posts                []*Post    `protobuf:"bytes,8,rep,name=posts,proto3" json:"posts"`
-	Bio                  string     `protobuf:"bytes,9,opt,name=bio,proto3" json:"bio"`
-	Status               string     `protobuf:"bytes,10,opt,name=status,proto3" json:"status"`
-}
-
-type Address struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
-	Country              string   `protobuf:"bytes,2,opt,name=country,proto3" json:"country"`
-	City                 string   `protobuf:"bytes,3,opt,name=city,proto3" json:"city"`
-	District             string   `protobuf:"bytes,4,opt,name=district,proto3" json:"district"`
-	PostalCode           string   `protobuf:"bytes,5,opt,name=postal_code,json=postalCode,proto3" json:"postal_code"`
-}
 
 
 
@@ -44,7 +23,7 @@ type Address struct {
 // @Accept json
 // @Produce json
 // @Success 200 {string} Success
-// @Param user body UserReq true "user body"
+// @Param user body model.User true "user body"
 // @Router /v1/users [post]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
@@ -74,11 +53,36 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		return
 	}
 
+
+	bodyByte,err := json.Marshal(response)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed marshal set to redis", l.Error(err))
+		return
+	}
+	
+	err = h.redisStorage.Set(body.FirstName,string(bodyByte))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed set to redis", l.Error(err))
+		return
+	}
 	c.JSON(http.StatusCreated, response)
 }
 
 // GetUser gets user by id
-// route /v1/users/{id} [get]
+// @Summary Get User By Id With Posts summary
+// @Description This api is using getting by id with posts
+// @Tegs User
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {string} model.User
+// @Router /v1/users/{id} [get]
 func (h *handlerV1) GetUser(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
 	jspbMarshal.UseProtoNames = true
@@ -102,8 +106,16 @@ func (h *handlerV1) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// ListUsers returns list of users
-// route /v1/users/ [get]
+// GetListUsers returns list of users
+// @Summary Get User list summary
+// @Description This api is using for getting users list
+// @Tegs User
+// @Accept json
+// @Produce json
+// @Param limit query int true "limit"
+// @Param page query int true "page"
+// @Success 200 {string} model.User
+// @Router /v1/users [get]
 func (h *handlerV1) GetListUsers(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
 
@@ -139,7 +151,15 @@ func (h *handlerV1) GetListUsers(c *gin.Context) {
 }
 
 // UpdateUser updates user by id
-// route /v1/users/{id} [put]
+// @Summary Update user summary
+// @Description This api is using update user by id
+// @Tags User 
+// @Accept json
+// @Produce json
+// @Success 200 {string} Success
+// @Param id path string true "id"
+// @Param user body model.UpdateUserReq true "user body"
+// @Router /v1/users/{id} [put]
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
 		body        pb.UpdateUserReq
@@ -173,27 +193,34 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// // DeleteUser deletes user by id
-// // route /v1/users/{id} [delete]
-// func (h *handlerV1) DeleteUser(c *gin.Context) {
-// 	var jspbMarshal protojson.MarshalOptions
-// 	jspbMarshal.UseProtoNames = true
+// DeleteUser deletes user by id
+// @Summary Delete user summary
+// @Description This api is using delete user by id
+// @Tags User 
+// @Accept json
+// @Produce json
+// @Success 200 {string} Success
+// @Param id path string true "id"
+// @Router /v1/users/{id} [delete]
+func (h *handlerV1) DeleteUser(c *gin.Context) {
+	var jspbMarshal protojson.MarshalOptions
+	jspbMarshal.UseProtoNames = true
 
-// 	guid := c.Param("id")
-// 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-// 	defer cancel()
+	guid := c.Param("id")
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
 
-// 	response, err := h.serviceManager.UserService().Delete(
-// 		ctx, &pb.ByIdReq{
-// 			Id: guid,
-// 		})
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to delete user", l.Error(err))
-// 		return
-// 	}
+	response, err := h.serviceManager.UserService().DeleteUser(
+		ctx, &pb.UserByIdReq{
+			Id: guid,
+		})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to delete user", l.Error(err))
+		return
+	}
 
-// 	c.JSON(http.StatusOK, response)
-// }
+	c.JSON(http.StatusOK, response)
+}

@@ -5,11 +5,30 @@ import (
 	"github.com/NajmiddinAbdulhakim/api-gateway/config"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/NajmiddinAbdulhakim/api-gateway/services"
+	_"github.com/NajmiddinAbdulhakim/api-gateway/storage/repo"
+	"github.com/gomodule/redigo/redis"
+	rds "github.com/NajmiddinAbdulhakim/api-gateway/storage/redis"
+	"fmt"
 )
 
 func main() {
+	// var redisRepo repo.RedisRepoStorage
 	cfg := config.Load()
 	log := logger.New(cfg.LogLevel, "api_gateway")
+
+	pool := redis.Pool{
+		MaxIdle:80,
+		MaxActive:12000,
+		Dial: func() (redis.Conn, error) {
+			c, err := redis.Dial("tcp",fmt.Sprintf("%s:%d",cfg.RedisHost,cfg.RedisPort))
+			if err != nil {
+				panic(err)
+			}
+			return c, err
+		},
+	}
+
+	redisRepo := rds.NewRedisRepo(&pool)
 
 	serviceManager, err := services.NewServiceManager(&cfg)
 	if err != nil {
@@ -20,6 +39,7 @@ func main() {
 		Conf:           cfg,
 		Logger:         log,
 		ServiceManager: serviceManager,
+		RedisRepo:  redisRepo,      
 	})
 
 	if err := server.Run(cfg.HTTPPort); err != nil {
