@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/encoding/protojson"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/utils"
-	_"github.com/NajmiddinAbdulhakim/api-gateway/api/handlers/model"
+	_"github.com/NajmiddinAbdulhakim/api-gateway/api/model"
 )
 
 

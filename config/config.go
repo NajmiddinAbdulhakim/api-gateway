@@ -23,6 +23,8 @@ type Config struct {
 
 	LogLevel string
 	HTTPPort string
+
+	SigninKey string
 }
 
 // Load loads environment vars and inflates Config
@@ -41,6 +43,8 @@ func Load() Config {
 
 	c.PostServiceHost = cast.ToString(getOrReturnDefault("POST_SERVICE_HOST", "127.0.0.1"))
 	c.PostServicePort = cast.ToInt(getOrReturnDefault("POST_SERVICE_PORT", 2222))
+
+	c.SigninKey = cast.ToString(getOrReturnDefault("SIGNIN_KEY", "tzkvwyuvywfczegoqclvuegvpkfwqkmqlarlxsscimnwonamoslueiendywvsolsiynsnlobnymlnuwpqmtzvbphhajlebrzlzpezdkhiaepevreisgcrhxkizrhcjrcmqrkkcgpdokbvanpfnocaqhugdfdquha"))
 
 	c.CtxTimeout = cast.ToInt(getOrReturnDefault("CTX_TIMEOUT", 7))
 

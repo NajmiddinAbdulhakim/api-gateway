@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/NajmiddinAbdulhakim/api-gateway/api/auth"
 	"github.com/NajmiddinAbdulhakim/api-gateway/config"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/NajmiddinAbdulhakim/api-gateway/services"
@@ -12,6 +13,7 @@ type handlerV1 struct {
 	serviceManager 	services.IServiceManager
 	cfg            	config.Config
 	redisStorage 	repo.RedisRepoStorage
+	jwtHendler 		auth.JWTHendler
 }
 
 // HandlerV1Config ...
@@ -20,6 +22,7 @@ type HandlerV1Config struct {
 	ServiceManager 	services.IServiceManager
 	Cfg            	config.Config
 	Redis 			repo.RedisRepoStorage
+	jwtHendler 		auth.JWTHendler
 }
 
 // New ...
@@ -29,5 +32,6 @@ func New(c *HandlerV1Config) *handlerV1 {
 		serviceManager: c.ServiceManager,
 		cfg:            c.Cfg,
 		redisStorage: 	c.Redis,
+		jwtHendler:		c.jwtHendler,
 	}
 }
