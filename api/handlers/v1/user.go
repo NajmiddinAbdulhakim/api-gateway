@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 	"encoding/json"
+	"golang.org/x/crypto/bcrypt"
 	pb "github.com/NajmiddinAbdulhakim/api-gateway/genproto"
 	l "github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/gin-gonic/gin"
@@ -73,6 +74,52 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, response)
 }
+
+
+// Login returns list of users
+// @Summary Login User summary
+// @Description This api is using for login user
+// @Tegs Login
+// @Accept json
+// @Produce json
+// @Param email query int true "email"
+// @Param password query int true "password"
+// @Success 200 {string} model.LoginUser
+// @Router /v1/users/login [get]
+func (h * handlerV1) LoginUser(c *gin.Context) {
+	var (
+		jspbMarshal protojson.MarshalOptions
+	)
+	jspbMarshal.UseProtoNames = true
+
+	email := c.Query("email")
+	password := c.Query("password")
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
+	resp, err := h.serviceManager.UserService().LoginUser(
+		ctx,
+		&pb.LoginUserReq{
+			Email: email,
+		},
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to email", l.Error(err))
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(resp.Password))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to password", l.Error(err))
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
 
 // GetUser gets user by id
 // @Summary Get User By Id With Posts summary

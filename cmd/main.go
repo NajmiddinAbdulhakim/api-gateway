@@ -1,14 +1,15 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/NajmiddinAbdulhakim/api-gateway/api"
 	"github.com/NajmiddinAbdulhakim/api-gateway/config"
 	"github.com/NajmiddinAbdulhakim/api-gateway/pkg/logger"
 	"github.com/NajmiddinAbdulhakim/api-gateway/services"
-	_"github.com/NajmiddinAbdulhakim/api-gateway/storage/repo"
-	"github.com/gomodule/redigo/redis"
 	rds "github.com/NajmiddinAbdulhakim/api-gateway/storage/redis"
-	"fmt"
+	_ "github.com/NajmiddinAbdulhakim/api-gateway/storage/repo"
+	"github.com/gomodule/redigo/redis"
 )
 
 func main() {
@@ -17,10 +18,10 @@ func main() {
 	log := logger.New(cfg.LogLevel, "api_gateway")
 
 	pool := redis.Pool{
-		MaxIdle:80,
-		MaxActive:12000,
+		MaxIdle:   80,
+		MaxActive: 12000,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp",fmt.Sprintf("%s:%d",cfg.RedisHost,cfg.RedisPort))
+			c, err := redis.Dial("tcp", fmt.Sprintf("%s:%d", cfg.RedisHost, cfg.RedisPort))
 			if err != nil {
 				panic(err)
 			}
@@ -39,7 +40,7 @@ func main() {
 		Conf:           cfg,
 		Logger:         log,
 		ServiceManager: serviceManager,
-		RedisRepo:  redisRepo,      
+		RedisRepo:      redisRepo,
 	})
 
 	if err := server.Run(cfg.HTTPPort); err != nil {

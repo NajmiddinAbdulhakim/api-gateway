@@ -77,6 +77,11 @@ type RegisterUserRes struct {
 	AccessToken string `json:"access_token"`
 }
 
+type LoginUser struct {
+	Email  string `json:"email"`
+	Password string `json:"password"`
+}
+
 
 
 

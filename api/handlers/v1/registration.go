@@ -164,6 +164,9 @@ func (h * handlerV1) Verify(c *gin.Context){
 		h.log.Error("failed while hashing user data", l.Error(err))
 		return
 	}
+	if hashedPassword != nil {
+		return
+	}
 	id, err := uuid.NewV4()
 	if  err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

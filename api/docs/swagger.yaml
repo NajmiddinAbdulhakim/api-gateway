@@ -217,4 +217,28 @@ paths:
       summary: Update user summary
       tags:
       - User
+  /v1/users/login:
+    get:
+      consumes:
+      - application/json
+      description: This api is using for login user
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: integer
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Login User summary
 swagger: "2.0"

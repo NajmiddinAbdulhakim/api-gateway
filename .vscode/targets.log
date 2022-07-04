@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jun 23 18:35:41 2022
+# Make data base, printed on Mon Jul  4 07:15:19 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ SNAP_DATA = /var/snap/code/99
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:52235
+JOURNAL_STREAM = 8:40460
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -79,7 +79,7 @@ VSCODE_VERBOSE_LOGGING = true
 # environment
 _ = /snap/code/99/usr/share/code/code
 # environment
-MANAGERPID = 1046
+MANAGERPID = 1053
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -93,11 +93,11 @@ GSETTINGS_SCHEMA_DIR = /snap/code/99/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /usr/local/go/bin:/home/najmiddin/.local/bin:/home/najmiddin/anaconda3/condabin:/home/najmiddin/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/bin
+PATH = /home/najmiddin/.local/bin:/home/najmiddin/anaconda3/condabin:/home/najmiddin/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/najmiddin/go/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/Najmiddin:@/tmp/.ICE-unix/1452,unix/Najmiddin:/tmp/.ICE-unix/1452
+SESSION_MANAGER = local/Najmiddin:@/tmp/.ICE-unix/1477,unix/Najmiddin:/tmp/.ICE-unix/1477
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -117,7 +117,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 362d9604116649838ff00c1a68cb5cc0
+INVOCATION_ID = 277776c86c374327af6b9c7d9cdbeb04
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/99/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -129,11 +129,9 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2718
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4665
 # automatic
 %F = $(notdir $%)
-# environment
-GOBIN = /home/najmiddin/go/bin
 # environment
 DISPLAY = :0
 # environment
@@ -147,7 +145,7 @@ PWD = /home/najmiddin/go/src/github.com/NajmiddinAbdulhakim/api-gateway
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1369
+SSH_AGENT_PID = 1404
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -199,7 +197,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-d96de626-df27-4d2c-8858-3fee4b4fa59f.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4612b711-64cb-470b-8acd-baa869df2e12.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -279,9 +277,9 @@ CHROME_DESKTOP = code-url-handler.desktop
 # environment
 WINDOWPATH = 2
 # default
- 
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
+ 
 GJS_DEBUG_OUTPUT = stderr
 # makefile (from 'Makefile', line 4)
 APP_CMD_DIR = ./cmd
@@ -292,11 +290,11 @@ LC_ADDRESS = uz_UZ.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2767
+VSCODE_PID = 4716
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=141/1024=14%, Rehash=0, Collisions=27/166=16%
+# Load=140/1024=14%, Rehash=0, Collisions=27/165=16%
 
 # Pattern-specific Variable Values
 
@@ -377,6 +375,6 @@ lint:
 # strcache performance: lookups = 34 / hit rate = 23%
 # hash-table stats:
 # Load=26/8192=0%, Rehash=0, Collisions=1/34=3%
-# Finished Make data base on Thu Jun 23 18:35:41 2022
+# Finished Make data base on Mon Jul  4 07:15:19 2022
 
  
